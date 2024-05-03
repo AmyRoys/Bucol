@@ -1,5 +1,5 @@
 %{
-#include "BucolParser.tab.h"
+#include "bucol.tab.h"
 #include <string.h>
 %}
 

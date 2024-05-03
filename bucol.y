@@ -16,7 +16,6 @@ void yyerror(const char *s);
 %token <str> IDENTIFIER
 %token <num> INTEGER
 %token <str> STRING
-%type <str> output
 %token BEGINNING END BODY MOVE ADD TO INPUT PRINT SEMICOLON DOT QUESTION_MARK PLUS EQUALS
 
 %%
@@ -42,22 +41,22 @@ statement: PRINT STRING DOT { printf("Printed string: %s\n", $2); free($2); }
          | ADD IDENTIFIER TO IDENTIFIER DOT { printf("Added value to %s\n", $4); free($4); }
          | PRINT identifiers DOT { printf("Printed values\n"); }
 
-value: INTEGER { printf("Value is %d\n", $1); }
-     | IDENTIFIER { printf("Value is %s\n", $1); free($1); }
-     ;
+// value: INTEGER { printf("Value is %d\n", $1); }
+//      | IDENTIFIER { printf("Value is %s\n", $1); free($1); }
+//      ;
 
 identifiers: IDENTIFIER { printf("Identifier is %s\n", $1); free($1); }
            | identifiers SEMICOLON STRING { printf("String is %s\n", $3); free($3); }
            | identifiers SEMICOLON IDENTIFIER { printf("Identifier is %s\n", $3); free($3); }
            ;
 
-outputs: output { printf("Output is %s\n", $1); free($1); }
-       | outputs SEMICOLON output { printf("Output is %s\n", $3); free($3); }
-       ;
+// outputs: output { printf("Output is %s\n", $1); free($1); }
+//        | outputs SEMICOLON output { printf("Output is %s\n", $3); free($3); }
+//        ;
 
-output: STRING
-      | IDENTIFIER
-      ;
+// output: STRING
+//       | IDENTIFIER
+//       ;
 
 %%
 

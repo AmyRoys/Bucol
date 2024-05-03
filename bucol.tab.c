@@ -442,8 +442,8 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    24,    24,    25,    28,    29,    32,    35,    36,    39,
-      40,    41,    42,    43,    49,    50,    51
+       0,    23,    23,    24,    27,    28,    31,    34,    35,    38,
+      39,    40,    41,    42,    48,    49,    50
 };
 #endif
 
@@ -1360,77 +1360,77 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 24 "bucol.y"
+#line 23 "bucol.y"
     { printf("Program is correctly formed\n"); ;}
     break;
 
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 25 "bucol.y"
+#line 24 "bucol.y"
     { printf("Program is incorrectly formed\n"); ;}
     break;
 
   case 6:
 
 /* Line 1455 of yacc.c  */
-#line 32 "bucol.y"
+#line 31 "bucol.y"
     { printf("Declared variable %s with capacity %s\n", (yyvsp[(2) - (3)].str), (yyvsp[(1) - (3)].str)); free((yyvsp[(1) - (3)].str)); free((yyvsp[(2) - (3)].str)); ;}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 39 "bucol.y"
+#line 38 "bucol.y"
     { printf("Printed string: %s\n", (yyvsp[(2) - (3)].str)); free((yyvsp[(2) - (3)].str)); ;}
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 40 "bucol.y"
+#line 39 "bucol.y"
     { printf("Input to variable: %s\n", (yyvsp[(2) - (3)].str)); free((yyvsp[(2) - (3)].str)); ;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 41 "bucol.y"
+#line 40 "bucol.y"
     { printf("Moved value to %s\n", (yyvsp[(4) - (5)].str)); free((yyvsp[(4) - (5)].str)); ;}
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 42 "bucol.y"
+#line 41 "bucol.y"
     { printf("Added value to %s\n", (yyvsp[(4) - (5)].str)); free((yyvsp[(4) - (5)].str)); ;}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 43 "bucol.y"
+#line 42 "bucol.y"
     { printf("Printed values\n"); ;}
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 49 "bucol.y"
+#line 48 "bucol.y"
     { printf("Identifier is %s\n", (yyvsp[(1) - (1)].str)); free((yyvsp[(1) - (1)].str)); ;}
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 50 "bucol.y"
+#line 49 "bucol.y"
     { printf("String is %s\n", (yyvsp[(3) - (3)].str)); free((yyvsp[(3) - (3)].str)); ;}
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 51 "bucol.y"
+#line 50 "bucol.y"
     { printf("Identifier is %s\n", (yyvsp[(3) - (3)].str)); free((yyvsp[(3) - (3)].str)); ;}
     break;
 
@@ -1649,7 +1649,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 62 "bucol.y"
+#line 61 "bucol.y"
 
 
 void yyerror(const char *s) {

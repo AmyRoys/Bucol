@@ -397,10 +397,10 @@ static char *yy_last_accepting_cpos;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "BucolLexer.l"
+#line 1 "bucol.l"
 #define INITIAL 0
-#line 2 "BucolLexer.l"
-#include "BucolParser.tab.h"
+#line 2 "bucol.l"
+#include "bucol.tab.h"
 #include <string.h>
 #line 406 "lex.yy.c"
 
@@ -553,7 +553,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 8 "BucolLexer.l"
+#line 8 "bucol.l"
 
 
 #line 560 "lex.yy.c"
@@ -641,102 +641,102 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 10 "BucolLexer.l"
+#line 10 "bucol.l"
 { /* ignore whitespace and newlines */ }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 11 "BucolLexer.l"
+#line 11 "bucol.l"
 { return BEGINNING; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 12 "BucolLexer.l"
+#line 12 "bucol.l"
 { return END; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 13 "BucolLexer.l"
+#line 13 "bucol.l"
 { return BODY; } 
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 14 "BucolLexer.l"
+#line 14 "bucol.l"
 { return MOVE; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 15 "BucolLexer.l"
+#line 15 "bucol.l"
 { return ADD; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 16 "BucolLexer.l"
+#line 16 "bucol.l"
 { return TO; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 17 "BucolLexer.l"
+#line 17 "bucol.l"
 { return INPUT; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 18 "BucolLexer.l"
+#line 18 "bucol.l"
 { return PRINT; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 19 "BucolLexer.l"
+#line 19 "bucol.l"
 { return DOT; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 20 "BucolLexer.l"
+#line 20 "bucol.l"
 { return QUESTION_MARK; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 21 "BucolLexer.l"
+#line 21 "bucol.l"
 { return PLUS; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 22 "BucolLexer.l"
+#line 22 "bucol.l"
 {return EQUALS;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 23 "BucolLexer.l"
+#line 23 "bucol.l"
 { yylval.str = strdup(yytext); return CAPACITY; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 24 "BucolLexer.l"
+#line 24 "bucol.l"
 { yylval.str = strdup(yytext); return IDENTIFIER; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 25 "BucolLexer.l"
+#line 25 "bucol.l"
 { yylval.str = strdup(yytext); return STRING; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 26 "BucolLexer.l"
+#line 26 "bucol.l"
 { yylval.num = atoi(yytext); return INTEGER; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 27 "BucolLexer.l"
+#line 27 "bucol.l"
 { return SEMICOLON; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 28 "BucolLexer.l"
+#line 28 "bucol.l"
 { printf("Unknown character: %s\n", yytext); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 30 "BucolLexer.l"
+#line 30 "bucol.l"
 ECHO;
 	YY_BREAK
 #line 743 "lex.yy.c"
@@ -1625,4 +1625,4 @@ int main()
 	return 0;
 	}
 #endif
-#line 30 "BucolLexer.l"
+#line 30 "bucol.l"
