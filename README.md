@@ -29,6 +29,7 @@ flex bucol.l
 gcc bucol.tab.c lex.yy.c -o bucol
 ```
 4. Test a bucol program
+
 To run through program line-by-line
 ```bash
 .\bucol.exe
