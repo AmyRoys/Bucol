@@ -39,23 +39,20 @@
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     CAPACITY = 258,
+     VARALLOCATION = 258,
      IDENTIFIER = 259,
-     INTEGER = 260,
-     STRING = 261,
+     NUMBER = 260,
+     INPUT = 261,
      BEGINNING = 262,
-     END = 263,
+     NEWLINE = 263,
      BODY = 264,
-     MOVE = 265,
-     ADD = 266,
+     ADD = 265,
+     MOVE = 266,
      TO = 267,
-     INPUT = 268,
+     END = 268,
      PRINT = 269,
      SEMICOLON = 270,
-     DOT = 271,
-     QUESTION_MARK = 272,
-     PLUS = 273,
-     EQUALS = 274
+     WORD = 271
    };
 #endif
 
@@ -66,16 +63,15 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 72 "bucolTest.y"
+#line 76 "parser.y"
 
-    int num;
-    char *str;
-    struct IdentifierList *id_list;
+    int intValue;
+    char* strValue;
 
 
 
 /* Line 1676 of yacc.c  */
-#line 79 "bucolTest.tab.h"
+#line 75 "parser.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #define HASH_SIZE 100
 
@@ -28,6 +29,7 @@ void add_identifier(IdentifierList *id_list, char *identifier) {
 typedef struct Symbol {
     char *name;
     int capacity;
+    int value; 
     struct Symbol *next;  
 } Symbol;
 
@@ -53,11 +55,11 @@ Symbol* find_symbol(char *name) {
     exit(1);
 }
 
-void add_symbol(char *name, int capacity) {
+void add_symbol(char *name, char *capacity) {
     unsigned int index = hash(name);
     Symbol *symbol = malloc(sizeof(Symbol));
     symbol->name = strdup(name);
-    symbol->capacity = capacity;
+    symbol->capacity = atoi(capacity);  
     symbol->next = symbol_table[index];
     symbol_table[index] = symbol;
 }
@@ -91,9 +93,9 @@ declarations: /* empty string */
             | declarations declaration
             ;
 
-declaration: CAPACITY IDENTIFIER DOT { 
+declaration: IDENTIFIER CAPACITY DOT { 
     printf("Declared variable %s with capacity %s\n", $2, $1); 
-    add_symbol($2, strlen($1));
+    add_symbol($2, $1);
     free($1); 
     free($2); 
 }
@@ -104,7 +106,16 @@ statements: /* empty string */
 
 statement: PRINT STRING DOT { printf("Printed string: %s\n", $2); free($2); }
          | INPUT IDENTIFIER DOT { printf("Input to variable: %s\n", $2); free($2); }
-         | ADD IDENTIFIER TO IDENTIFIER DOT { printf("Added value to %s\n", $4); free($4); }
+         | ADD IDENTIFIER TO IDENTIFIER DOT { 
+            printf("Added value to %s\n", $4); 
+            Symbol *symbol1 = find_symbol($2);
+            Symbol *symbol2 = find_symbol($4);
+            if (log10(symbol1->value + symbol2->value) + 1 > symbol2->capacity) {
+                fprintf(stderr, "Error: value exceeds variable's capacity\n");
+                exit(1);
+            }
+            symbol2->value += symbol1->value;  
+        }
          | PRINT identifiers DOT { 
             printf("Printed values\n"); 
             Symbol *symbol;
@@ -118,31 +129,14 @@ statement: PRINT STRING DOT { printf("Printed string: %s\n", $2); free($2); }
                 id_list = id_list->next;
             }
         }
-         | MOVE INTEGER TO IDENTIFIER DOT{ 
+         | MOVE INTEGER TO IDENTIFIER DOT { 
             printf("Moving value %d to variable: %s\n", $2, $4); 
             Symbol *symbol = find_symbol($4);
-            if (!symbol) {
-                printf("Error: variable not declared\n");
-                exit(1);
-            }
             if ($2 > symbol->capacity) {
-                printf("Warning: value exceeds variable's capacity\n");
-            }
-            free($4); 
-         }
-         | MOVE IDENTIFIER TO IDENTIFIER DOT { 
-            printf("Moving value from variable %s to variable: %s\n", $2, $4); 
-            Symbol *symbol1 = find_symbol($2);
-            Symbol *symbol2 = find_symbol($4);
-            if (!symbol1 || !symbol2) {
-                printf("Error: variable not declared\n");
+                fprintf(stderr, "Error: value exceeds variable's capacity\n");
                 exit(1);
             }
-            if (symbol1->capacity > symbol2->capacity) {
-                printf("Warning: source variable is larger than destination variable\n");
-            }
-            free($2); 
-            free($4); 
+            symbol->value = $2;  // store the value in the symbol
         }
 
 identifiers: IDENTIFIER { $$ = create_identifier_list($1); }
