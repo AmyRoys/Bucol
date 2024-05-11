@@ -1,10 +1,11 @@
 %{
-    #include "parser.tab.h"
+    #include "bucol.tab.h"
     #include <string.h>
 %}
 
 %option yylineno
 %option noyywrap
+%option caseless
 %%
 
 [\t ]+ ;
@@ -17,10 +18,10 @@
 "PRINT" {return(PRINT);}
 "END" {return(END);}
 ";" {return(SEMICOLON);}
-"." {return(NEWLINE);}
-\"[^\n\r]*\" {return(WORD);}
-[0-9]+ {yylval.intValue = atoi(yytext); return(NUMBER);}
-[X]+ {yylval.intValue=yyleng ;return(VARALLOCATION); }
-[a-zA-Z-][A-Za-z0-9-]* {yylval.strValue = strdup(yytext); return(IDENTIFIER); }
+"." {return(DOT);}
+\"[^\n\r]*\" {return(STRING);}
+[0-9]+ {yylval.num = atoi(yytext); return(INTEGER);}
+[X]+ {yylval.num=yyleng ;return(CAPACITY); }
+[a-zA-Z-][A-Za-z0-9-]* {yylval.strs = strdup(yytext); return(IDENTIFIER); }
 . {}
 %%

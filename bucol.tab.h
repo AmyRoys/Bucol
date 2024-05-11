@@ -40,22 +40,19 @@
       know about them.  */
    enum yytokentype {
      CAPACITY = 258,
-     IDENTIFIER = 259,
-     INTEGER = 260,
-     STRING = 261,
+     INTEGER = 259,
+     IDENTIFIER = 260,
+     INPUT = 261,
      BEGINNING = 262,
-     END = 263,
+     DOT = 263,
      BODY = 264,
-     MOVE = 265,
-     ADD = 266,
+     ADD = 265,
+     MOVE = 266,
      TO = 267,
-     INPUT = 268,
+     END = 268,
      PRINT = 269,
      SEMICOLON = 270,
-     DOT = 271,
-     QUESTION_MARK = 272,
-     PLUS = 273,
-     EQUALS = 274
+     STRING = 271
    };
 #endif
 
@@ -69,12 +66,12 @@ typedef union YYSTYPE
 #line 10 "bucol.y"
 
     int num;
-    char *str;
+    char* strs;
 
 
 
 /* Line 1676 of yacc.c  */
-#line 78 "bucol.tab.h"
+#line 75 "bucol.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

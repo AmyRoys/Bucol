@@ -4,13 +4,15 @@
 %}
 
 %option noyywrap
+%option yylineno
+%option caseless
 
 %%
 
-[ \t\n] { /* ignore whitespace and newlines */ }
-"BEGINNING." { return BEGINNING; }
-"END." { return END; }
-"BODY." { return BODY; } 
+[ \t\n] ;
+"BEGINNING" { return BEGINNING; }
+"END" { return END; }
+"BODY" { return BODY; } 
 "MOVE" { return MOVE; }
 "ADD" { return ADD; }
 "TO" { return TO; }
@@ -20,11 +22,14 @@
 "?" { return QUESTION_MARK; }
 "+" { return PLUS; }
 "=" {return EQUALS;}
-X+ { yylval.str = strdup(yytext); return CAPACITY; }
-[a-zA-Z][a-zA-Z0-9-]* { yylval.str = strdup(yytext); return IDENTIFIER; }
-\".*\" { yylval.str = strdup(yytext); return STRING; }
-[0-9]+ { yylval.num = atoi(yytext); return INTEGER; }
 ";" { return SEMICOLON; }
+[X]+ {yylval.ints =yyleng ; return CAPACITY; }
+[a-zA-Z-][A-Za-z0-9-]* {yylval.strs = strdup(yytext); return(IDENTIFIER); }
+\"[^\"]*\" {
+    yylval = strdup(yytext + 1, strlen(yytext) - 2);
+    return STRING;
+}
+[0-9]+ { yylval.ints = atoi(yytext); return INTEGER; }
 . { printf("Unknown character: %s\n", yytext); }
 
 %%

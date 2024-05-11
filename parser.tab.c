@@ -68,7 +68,7 @@
 /* Copy the first part of user declarations.  */
 
 /* Line 189 of yacc.c  */
-#line 2 "parser.y"
+#line 1 "parser.y"
 
 #include <stdio.h>
 #include <string.h>
@@ -196,7 +196,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 76 "parser.y"
+#line 75 "parser.y"
 
     int intValue;
     char* strValue;
@@ -524,13 +524,13 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    98,    98,    99,    99,   100,   100,   100,   101,   101,
-     101,   101,   102,   111,   111,   111,   112,   112,   112,   112,
-     112,   117,   117,   117,   117,   117,   118,   118,   118,   118,
-     118,   118,   119,   119,   119,   119,   119,   119,   120,   120,
-     120,   120,   120,   120,   120,   121,   121,   121,   121,   121,
-     121,   121,   122,   123,   124,   125,   125,   126,   126,   127,
-     128,   128,   128,   128,   129
+       0,    97,    97,    99,    99,   101,   102,   103,   105,   105,
+     106,   107,   109,   119,   119,   119,   121,   121,   121,   121,
+     121,   127,   128,   129,   130,   131,   133,   134,   135,   136,
+     137,   138,   140,   141,   142,   143,   144,   145,   147,   148,
+     149,   150,   151,   152,   153,   155,   156,   157,   158,   159,
+     160,   161,   163,   168,   173,   177,   178,   180,   181,   183,
+     185,   186,   187,   188,   190
 };
 #endif
 
@@ -1490,28 +1490,28 @@ yyreduce:
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 101 "parser.y"
+#line 105 "parser.y"
     {yyerror("BODY not declared");;}
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 101 "parser.y"
+#line 106 "parser.y"
     {yyerror("BODY not declared");;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 101 "parser.y"
+#line 107 "parser.y"
     {yyerror("BODY not declared");;}
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 102 "parser.y"
+#line 109 "parser.y"
     {
     for (int i = 1; i < strlen((yyvsp[(2) - (3)].strValue))-1; i++){
         if ((yyvsp[(2) - (3)].strValue)[i-1] == 'X' && (yyvsp[(2) - (3)].strValue)[i] == 'X'){
@@ -1526,7 +1526,7 @@ yyreduce:
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 112 "parser.y"
+#line 121 "parser.y"
     {
     char errorMessage[100];
     int temp = snprintf(errorMessage, 100, "Operation %s not correctly declared", (yyvsp[(1) - (1)].strValue));
@@ -1537,70 +1537,85 @@ yyreduce:
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 117 "parser.y"
+#line 127 "parser.y"
     {(yyval.strValue)="ADD";;}
     break;
 
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 117 "parser.y"
+#line 128 "parser.y"
     {(yyval.strValue)="MOVE";;}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 117 "parser.y"
+#line 129 "parser.y"
     {(yyval.strValue)="PRINT";;}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 117 "parser.y"
+#line 130 "parser.y"
     {(yyval.strValue)="INPUT";;}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 117 "parser.y"
+#line 131 "parser.y"
     {(yyval.strValue)="TO";;}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 122 "parser.y"
-    {updateSymbolValue((yyvsp[(4) - (4)].strValue), getSymbolValue((yyvsp[(4) - (4)].strValue)) + (yyvsp[(2) - (4)].intValue));;}
+#line 163 "parser.y"
+    {
+            printf("Adding value %d to variable %s\n", (yyvsp[(2) - (4)].intValue), (yyvsp[(4) - (4)].strValue));
+            updateSymbolValue((yyvsp[(4) - (4)].strValue), getSymbolValue((yyvsp[(4) - (4)].strValue)) + (yyvsp[(2) - (4)].intValue));
+        ;}
     break;
 
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 123 "parser.y"
-    {updateSymbolValue((yyvsp[(4) - (4)].strValue), (yyvsp[(2) - (4)].intValue));;}
+#line 168 "parser.y"
+    {
+            printf("Moving value %d to variable %s\n", (yyvsp[(2) - (4)].intValue), (yyvsp[(4) - (4)].strValue));
+            updateSymbolValue((yyvsp[(4) - (4)].strValue), (yyvsp[(2) - (4)].intValue));
+        ;}
+    break;
+
+  case 54:
+
+/* Line 1455 of yacc.c  */
+#line 173 "parser.y"
+    {
+            printf("Input to multiple identifiers\n");
+        ;}
     break;
 
   case 57:
 
 /* Line 1455 of yacc.c  */
-#line 126 "parser.y"
+#line 180 "parser.y"
     { (yyval.intValue) = getSymbolValue((yyvsp[(1) - (1)].strValue)); ;}
     break;
 
   case 58:
 
 /* Line 1455 of yacc.c  */
-#line 126 "parser.y"
+#line 181 "parser.y"
     { (yyval.intValue) = (yyvsp[(1) - (1)].intValue); ;}
     break;
 
   case 64:
 
 /* Line 1455 of yacc.c  */
-#line 129 "parser.y"
+#line 190 "parser.y"
     {
     if(symbolExists((yyvsp[(1) - (1)].strValue)) == 1) {(yyval.strValue) = (yyvsp[(1) - (1)].strValue);} 
     else {char errorMessage [100]; 
@@ -1611,7 +1626,7 @@ yyreduce:
 
 
 /* Line 1455 of yacc.c  */
-#line 1615 "parser.tab.c"
+#line 1630 "parser.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1823,7 +1838,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 134 "parser.y"
+#line 195 "parser.y"
 
 
 extern FILE *yyin;

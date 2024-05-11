@@ -1,70 +1,108 @@
 %{
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
+#include <math.h>
+#include "symbolTable.h"
+char error[100];
 
-extern int yylex();
-void yyerror(const char *s);
 %}
-
 %union {
     int num;
-    char *str;
+    char* strs;
 }
-
-%token <str> CAPACITY
-%token <str> IDENTIFIER
-%token <num> INTEGER
-%token <str> STRING
-%token BEGINNING END BODY MOVE ADD TO INPUT PRINT SEMICOLON DOT QUESTION_MARK PLUS EQUALS
-
+%token <num> CAPACITY INTEGER
+%token <strs> IDENTIFIER
+%token <num> INPUT
+%type <num> value
+%type <strs> validIdentifier errorOperation
+%token BEGINNING DOT BODY ADD MOVE TO END PRINT SEMICOLON STRING
 %%
 
-program: BEGINNING declarations BODY statements END { printf("Program is correctly formed\n"); }
-       | error { printf("Program is incorrectly formed\n"); }
-       ;
+program: beginning declarations main end
 
-declarations: /* empty string */
-            | declarations declaration
-            ;
+FULLSTOP: DOT | {yyerror("Line end missing");}
 
-declaration: CAPACITY IDENTIFIER DOT { printf("Declared variable %s with capacity %s\n", $2, $1); free($1); free($2); }
-            ;
+beginning: BEGINNING FULLSTOP
+    | BEGINNING error {yyerror("Expected '.' after BEGINNING");}
+    | error BEGINNING FULLSTOP {yyerror("Expected BEGINNING at the start");}
 
-statements: /* empty string */
-          | statements statement
-          ;
+end: END FULLSTOP
+    | END error {yyerror("Expected '.' after END");}
 
-statement: PRINT STRING DOT { printf("Printed string: %s\n", $2); free($2); }
-         | INPUT IDENTIFIER DOT { printf("Input to variable: %s\n", $2); free($2); }
-         | MOVE INTEGER TO IDENTIFIER DOT { printf("Moved value to %s\n", $4); free($4); }
-         | ADD IDENTIFIER TO IDENTIFIER DOT { printf("Added value to %s\n", $4); free($4); }
-         | PRINT identifiers DOT { printf("Printed values\n"); }
+declarations : declaration declarations 
+        | declaration body 
+        | body
 
-// value: INTEGER { printf("Value is %d\n", $1); }
-//      | IDENTIFIER { printf("Value is %s\n", $1); free($1); }
-//      ;
+body: BODY FULLSTOP
+    | BODY error {yyerror("Expected '.' after BODY");}
 
-identifiers: IDENTIFIER { printf("Identifier is %s\n", $1); free($1); }
-           | identifiers SEMICOLON STRING { printf("String is %s\n", $3); free($3); }
-           | identifiers SEMICOLON IDENTIFIER { printf("Identifier is %s\n", $3); free($3); }
-           ;
-
-// outputs: output { printf("Output is %s\n", $1); free($1); }
-//        | outputs SEMICOLON output { printf("Output is %s\n", $3); free($3); }
-//        ;
-
-// output: STRING
-//       | IDENTIFIER
-//       ;
-
-%%
-
-void yyerror(const char *s) {
-    fprintf(stderr, "Error: %s\n", s);
+declaration:  CAPACITY IDENTIFIER FULLSTOP {
+    for (int i = 1; i < strlen($2)-1; i++){
+        if ($2[i-1] == 'X' && $2[i] == 'X'){
+            yyerror("Cannot have contigious X in variable declaration\n");
+            return -1;
+        }
+    }
+    addSymbol($2, $1);
 }
 
-int main() {
+main : operations FULLSTOP { /* actions */ }
+            | main operations FULLSTOP { /* actions */ }
+            | end
+
+operations : add | move | input | print | errorOperation {
+    char error[100];
+    int temp = snprintf(error, 100, "Operation %s not correctly declared", $1);
+    yyerror(error);
+}
+
+errorOperation: ADD | MOVE | PRINT | INPUT | TO
+
+add : ADD value TO validIdentifier {
+            printf("Adding value %d to variable %s\n", $2, $4);
+            updateSymbolValue($4, getSymbolValue($4) + $2);
+        }
+
+move : MOVE value TO validIdentifier {
+            printf("Moving value %d to variable %s\n", $2, $4);
+            updateSymbolValue($4, $2);
+        }
+
+input : INPUT multipleIdentifiers {
+            printf("Input to multiple identifiers\n");
+        }
+
+multipleIdentifiers: multipleIdentifiers SEMICOLON validIdentifier 
+        | validIdentifier
+
+value : validIdentifier { $$ = getSymbolValue($1); } 
+        | INTEGER { $$ = $1; }
+
+print : PRINT printables 
+
+printables : validIdentifier SEMICOLON printables 
+        | STRING SEMICOLON printables 
+        | validIdentifier 
+        | STRING  
+
+validIdentifier : IDENTIFIER {
+    if(symbolExists($1) == 1) {$$ = $1;} 
+    else {char error [100]; 
+    int temp = snprintf(error, 100, "Identifier %s not declared", $1);
+    yyerror(error);
+    }
+}
+%%
+
+extern FILE *yyin;
+
+int main(int argc, char *argv[]){
     yyparse();
     return 0;
+}
+
+void yyerror(const char *s)
+{
+    fprintf(stderr, "Syntax Error at line %d: %s\n", yylineno, s);
 }
