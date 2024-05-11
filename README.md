@@ -18,15 +18,11 @@ These instructions will get you a copy of the project up and running on your loc
 ```bash
 git clone https://github.com/AmyRoys/Bucol.git
 ```
-2. Navigate to the project directory
+2. Build the project
 ```bash
-cd Bucol
-```
-3. Build the project
-```bash
-bison -d bucol.y
 flex bucol.l
-gcc bucol.tab.c lex.yy.c -o bucol
+bison -d bucol.y
+gcc -o bucol bucol.tab.c lex.yy.c symbolTable.c
 ```
 4. Test a bucol program
 
@@ -37,6 +33,8 @@ To run through program line-by-line
 To run through the program all at once
 ```bash
 Get-Content ValidProgram.bucol | .\bucol.exe
+
+Get-Content InValidProgram.bucol | .\bucol.exe
 ```
 
 ## How it Works
@@ -45,34 +43,37 @@ Get-Content ValidProgram.bucol | .\bucol.exe
 
 The lexer, implemented in `bucol.l`, is responsible for tokenizing the input source code. It uses regular expressions to match patterns in the input and convert them into tokens that the parser can understand.
 
-Here's a brief overview of how the lexer works:
-
-- It ignores whitespace and newlines (`[ \t\n]`).
-- It recognizes keywords and symbols of the Bucol language like "BEGINNING.", "END.", "BODY.", "MOVE", "ADD", "TO", "INPUT", "PRINT", ".", "?", "+", "=", and ";" and returns the corresponding tokens.
-- It recognizes capacities (`X+`) and identifiers (`[a-zA-Z][a-zA-Z0-9-]*`). The matched text is duplicated using `strdup` and the pointer to the duplicated string is stored in `yylval.str`. The lexer then returns the `CAPACITY` or `IDENTIFIER` token.
-- It recognizes strings (`\".*\"`). The matched text is duplicated using `strdup` and the pointer to the duplicated string is stored in `yylval.str`. The lexer then returns the `STRING` token.
-- It recognizes integers (`[0-9]+`). The matched text is converted to an integer using `atoi` and the integer is stored in `yylval.num`. The lexer then returns the `INTEGER` token.
-- If the lexer encounters an unknown character, it prints an error message.
+- Keywords: `BEGINNING`, `BODY`, `ADD`, `MOVE`, `INPUT`, `TO`, `PRINT`, `END`
+- Punctuation: `;`, `.`
+- Strings: Any sequence of characters enclosed in double quotes
+- Integers: Any sequence of one or more digits
+- Capacity: The letter `X`, with the value being the length of the sequence of `X`s
+- Identifiers: Any sequence of letters and digits, starting with a letter or a hyphen
 
 The lexer uses the `noyywrap` option, which means it doesn't support multiple input files. If the lexer reaches the end of the input, it stops lexing.
+
+It also uses the `caseless` option which tells the lexer to ignore case when matching patterns, which allows for the language to be case insensitive. 
 
 
 ### Parser
 
 The parser, implemented in `bucol.y`, is responsible for analyzing the tokens produced by the lexer and building a parse tree based on the grammar of the Bucol programming language.
 
-Here's a brief overview of how the parser works:
+The parser also interacts with the symbol table. When a variable is declared, the parser adds it to the symbol table with its initial value. When a variable is used, the parser checks if it has been declared by looking it up in the symbol table.
 
-- The `program` rule is the start symbol. It expects a `BEGINNING` token, followed by a series of declarations, a `BODY` token, a series of statements, and an `END` token. If this pattern is matched, it prints "Program is correctly formed". If there's an error, it prints "Program is incorrectly formed".
 
-- The `declarations` and `statements` rules are lists of `declaration` and `statement` rules, respectively. They can be empty or contain multiple declarations/statements.
 
-- The `declaration` rule matches a `CAPACITY` token followed by an `IDENTIFIER` token and a `DOT` token. It prints the declared variable and its capacity.
+### Symbol Table 
 
-- The `statement` rule matches different patterns corresponding to different statements in the Bucol language, such as print, input, move, and add. It prints the action performed.
+The symbol table is a hash table implemented in C, where the keys are the identifiers of the variables and the values are `Symbol` structures. Each `Symbol` structure contains the identifier of the variable, its current value, and its maximum length.
 
-- The `identifiers` rule matches a list of identifiers separated by semicolons. It prints each identifier.
+The symbol table provides the following functions:
 
-- The `yyerror` function is called when there's a syntax error. It prints an error message.
+- `hash(char *str)`: Computes the hash of a string.
+- `lookupSymbol(char *identifier)`: Looks up a symbol in the symbol table.
+- `addSymbol(char *identifier, int maxLen)`: Adds a symbol to the symbol table.
+- `symbolExists(char *identifier)`: Checks if a symbol exists in the symbol table.
+- `getSymbolValue(char* identifier)`: Gets the value of a symbol.
+- `updateSymbolValue(char* identifier, int value)`: Updates the value of a symbol.
 
-- The `main` function calls `yyparse` to start parsing. If parsing is successful, it returns 0.
+The symbol table is used by the parser to store and retrieve the values of variables.
