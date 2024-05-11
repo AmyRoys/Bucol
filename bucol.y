@@ -1,22 +1,24 @@
 %{
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
-#include "symbolTable.h"
-char error[100];
+    #include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    #include <math.h>
+    #include "symbolTable.h"
 
 %}
+
 %union {
     int num;
     char* strs;
 }
+
 %token <num> CAPACITY INTEGER
 %token <strs> IDENTIFIER
 %token <num> INPUT
 %type <num> value
-%type <strs> validIdentifier errorOperation
-%token BEGINNING DOT BODY ADD MOVE TO END PRINT SEMICOLON STRING
+%type <strs> declaredIdentifier 
+%token BEGINNING PRINT DOT MOVE TO END SEMICOLON BODY STRING ADD
+
 %%
 
 program: beginning declarations main end
@@ -40,7 +42,7 @@ body: BODY FULLSTOP
 declaration:  CAPACITY IDENTIFIER FULLSTOP {
     for (int i = 1; i < strlen($2)-1; i++){
         if ($2[i-1] == 'X' && $2[i] == 'X'){
-            yyerror("Cannot have contigious X in variable declaration\n");
+            yyerror("Error: no contigious Xs in variables allowed\n");
             return -1;
         }
     }
@@ -51,58 +53,43 @@ main : operations FULLSTOP { /* actions */ }
             | main operations FULLSTOP { /* actions */ }
             | end
 
-operations : add | move | input | print | errorOperation {
-    char error[100];
-    int temp = snprintf(error, 100, "Operation %s not correctly declared", $1);
-    yyerror(error);
-}
+operations : add | move | input | print | invalidOperations
 
-errorOperation: ADD | MOVE | PRINT | INPUT | TO
+invalidOperations: ADD | MOVE | PRINT | INPUT | TO
 
-add : ADD value TO validIdentifier {
+add : ADD value TO declaredIdentifier {
             printf("Adding value %d to variable %s\n", $2, $4);
             updateSymbolValue($4, getSymbolValue($4) + $2);
         }
 
-move : MOVE value TO validIdentifier {
+move : MOVE value TO declaredIdentifier {
             printf("Moving value %d to variable %s\n", $2, $4);
             updateSymbolValue($4, $2);
         }
 
-input : INPUT multipleIdentifiers {
-            printf("Input to multiple identifiers\n");
-        }
+input : INPUT identifierList
 
-multipleIdentifiers: multipleIdentifiers SEMICOLON validIdentifier 
-        | validIdentifier
+identifierList: identifierList SEMICOLON declaredIdentifier 
+        | declaredIdentifier
 
-value : validIdentifier { $$ = getSymbolValue($1); } 
+value : declaredIdentifier { $$ = getSymbolValue($1); } 
         | INTEGER { $$ = $1; }
 
-print : PRINT printables 
+print : PRINT outputSequence 
 
-printables : validIdentifier SEMICOLON printables 
-        | STRING SEMICOLON printables 
-        | validIdentifier 
+outputSequence : declaredIdentifier SEMICOLON outputSequence 
+        | STRING SEMICOLON outputSequence
+     
+        | declaredIdentifier 
         | STRING  
 
-validIdentifier : IDENTIFIER {
-    if(symbolExists($1) == 1) {$$ = $1;} 
-    else {char error [100]; 
-    int temp = snprintf(error, 100, "Identifier %s not declared", $1);
-    yyerror(error);
+declaredIdentifier : IDENTIFIER {
+    if(symbolExists($1) == 1) {
+        $$ = $1;
+    } else {
+        char error[100];
+        int temp = snprintf(error, 100, "Identifier %s has not been declared", $1);
+        yyerror(error);
     }
 }
 %%
-
-extern FILE *yyin;
-
-int main(int argc, char *argv[]){
-    yyparse();
-    return 0;
-}
-
-void yyerror(const char *s)
-{
-    fprintf(stderr, "Syntax Error at line %d: %s\n", yylineno, s);
-}

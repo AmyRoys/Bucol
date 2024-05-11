@@ -417,9 +417,9 @@ goto find_rule; \
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "parser.l"
+#line 1 "bucol.l"
 #define INITIAL 0
-#line 2 "parser.l"
+#line 2 "bucol.l"
     #include "bucol.tab.h"
     #include <string.h>
 #line 426 "lex.yy.c"
@@ -573,7 +573,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 9 "parser.l"
+#line 10 "bucol.l"
 
 
 #line 580 "lex.yy.c"
@@ -669,87 +669,87 @@ do_action:	/* This label is used only to access EOF actions. */
 	{ /* beginning of action switch */
 case 1:
 YY_RULE_SETUP
-#line 11 "parser.l"
+#line 12 "bucol.l"
 ;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 12 "parser.l"
+#line 13 "bucol.l"
 {return(BEGINNING);}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 13 "parser.l"
+#line 14 "bucol.l"
 {return(BODY);}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 14 "parser.l"
+#line 15 "bucol.l"
 {return(ADD);}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 15 "parser.l"
+#line 16 "bucol.l"
 {return(MOVE);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 16 "parser.l"
+#line 17 "bucol.l"
 {return(INPUT);}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 17 "parser.l"
+#line 18 "bucol.l"
 {return(TO);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 18 "parser.l"
+#line 19 "bucol.l"
 {return(PRINT);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 19 "parser.l"
+#line 20 "bucol.l"
 {return(END);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 20 "parser.l"
+#line 21 "bucol.l"
 {return(SEMICOLON);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 21 "parser.l"
+#line 22 "bucol.l"
 {return(DOT);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 22 "parser.l"
+#line 23 "bucol.l"
 {return(STRING);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 23 "parser.l"
+#line 24 "bucol.l"
 {yylval.num = atoi(yytext); return(INTEGER);}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 24 "parser.l"
+#line 25 "bucol.l"
 {yylval.num=yyleng ;return(CAPACITY); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 25 "parser.l"
+#line 26 "bucol.l"
 {yylval.strs = strdup(yytext); return(IDENTIFIER); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 26 "parser.l"
+#line 27 "bucol.l"
 {}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 27 "parser.l"
+#line 28 "bucol.l"
 ECHO;
 	YY_BREAK
 #line 756 "lex.yy.c"
@@ -1636,4 +1636,4 @@ int main()
 	return 0;
 	}
 #endif
-#line 27 "parser.l"
+#line 28 "bucol.l"

@@ -44,15 +44,15 @@
      IDENTIFIER = 260,
      INPUT = 261,
      BEGINNING = 262,
-     DOT = 263,
-     BODY = 264,
-     ADD = 265,
-     MOVE = 266,
-     TO = 267,
-     END = 268,
-     PRINT = 269,
-     SEMICOLON = 270,
-     STRING = 271
+     PRINT = 263,
+     DOT = 264,
+     MOVE = 265,
+     TO = 266,
+     END = 267,
+     SEMICOLON = 268,
+     BODY = 269,
+     STRING = 270,
+     ADD = 271
    };
 #endif
 

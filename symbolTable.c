@@ -1,11 +1,33 @@
+extern int yyparse(void);
+
 #include "symbolTable.h"
+#include "bucol.tab.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+char error[100];
+int errCounter = 0;
+
+int main(int argc, char *argv[]){
+    yyparse();
+
+    if (errCounter == 0) {
+        printf("Program is correctly formed.\n");
+    } else {
+        printf("Program is incorrectly formed.\n");
+    }
+
+    return 0;
+}
+
+void yyerror(const char *s)
+{
+    errCounter++;
+    fprintf(stderr, "Error found at line %d: %s\n", yylineno, s);
+}
 
 Symbol *symbolTable[TABLE_SIZE];
-void yyerror(const char *s);
 
 unsigned int hash(char *str) {
     unsigned int hash = 5381;
